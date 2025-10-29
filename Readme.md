@@ -1,6 +1,6 @@
 
 # 🔐 Splunk Project: Investigating Unauthorized Access  
-**Day 19 of #30DaysOfSOC Challenge**
+**Day 20 of #30DaysOfSOC Challenge**
 
 ---
 
@@ -36,10 +36,11 @@ The project combines **log analysis** and **dashboard creation** to detect suspi
 ## ⚙️ Lab Setup and Configuration
 
 1. Installed **Splunk Enterprise** on Windows.  
-2. Added dataset via **Add Data → Upload**.  
-3. Selected **_json** as the source type for automatic field extraction.  
-4. Indexed data into **linux_auth**.  
-5. Verified data with:
+2. Added dataset via **Add Data → Upload**.
+3. 📥 [Download the Linux Unauthorized Auditd Log File](./Linux_UnAuthorized_Auditd_logs.json)
+4. Selected **_json** as the source type for automatic field extraction.  
+5. Indexed data into **linux_auth**.  
+6. Verified data with:
    ```spl
    index=linux_auth | head 5
 ````
@@ -53,15 +54,12 @@ The project combines **log analysis** and **dashboard creation** to detect suspi
 ```spl
 index=linux_auth result=success | stats count as "Total Success Events"
 ```
-
+````
 **Result:**
 A total of **914 successful events** were recorded.
 
 **Interpretation:**
 These represent successful authentication or permitted actions within the audit logs, indicating normal system operations.
-
-📸 *Screenshot:*
-![Total Success Events](./screenshots/Total_Success_Events.png)
 
 ---
 
@@ -80,9 +78,6 @@ index=linux_auth | stats count by event_type | sort - count | head 1
 **Interpretation:**
 The most frequent event type is **AVC_DENIED**, which originates from **SELinux** and signifies blocked access attempts.
 Such logs are key indicators of **unauthorized activity or policy enforcement** on Linux systems.
-
-📸 *Screenshot:*
-![Most Common Triggered Event](./screenshots/Most_Common_Triggered_Event.png)
 
 ---
 
@@ -106,8 +101,11 @@ index=linux_auth uid=1010 | stats count by path | where count=2
 **Interpretation:**
 User `uid=1010` attempted to access sensitive paths multiple times — including **/etc/shadow** and **/etc/sudoers** — which often indicate **privilege escalation or reconnaissance** attempts.
 
-📸 *Screenshot:*
-![File Path Accessed Twice by User](./screenshots/File_Path_Accessed_Twice_by_User.png)
+
+### 🧩 Project Analysis Screenshots
+All query results and investigation evidence are stored in the **screenshots** folder.
+
+📸 [🔗 View Project Screenshots Folder](./screenshots)
 
 ---
 
@@ -119,20 +117,17 @@ All findings were compiled into a Splunk dashboard for better visibility and qui
 
 | Panel                              | SPL Query                  | Visualization             | Description    |                                      |                                            |                                 |
 | ---------------------------------- | -------------------------- | ------------------------- | -------------- | ------------------------------------ | ------------------------------------------ | ------------------------------- |
-| **1. Success vs Denied Events**    | `index=linux_auth          | stats count by result`    | Pie Chart      | Displays event outcomes distribution |                                            |                                 |
-| **2. Most Common Event Types**     | `index=linux_auth          | stats count by event_type | sort - count`  | Bar Chart                            | Highlights frequent security event types   |                                 |
-| **3. Top Accessed Paths by UID**   | `index=linux_auth uid=*    | stats count by path       | sort - count   | head 10`                             | Table                                      | Lists frequently accessed files |
-| **4. Repeated Access by UID=1010** | `index=linux_auth uid=1010 | stats count by path       | where count=2` | Table                                | Detects repeated access to sensitive files |                                 |
+| **1. Success vs Failed Events**    | `index=linux_auth          | stats count by result`    | Pie Chart      | Displays event outcomes distribution |                                            |                                 |
+| **2. Top Users by Login Attempts**     | `index=linux_auth          | stats count by event_type | sort - count`  | Bar Chart                            | Highlights frequent security event types   |                                 |
+| **3. Suspicious Access Attempts   | `index=linux_auth uid=*    | stats count by path       | sort - count   | head 10`                             | Table                                      | Lists frequently accessed files |
 
 ---
 
-## 📸 Dashboard Visuals
+#### 📊 Dashboard Visuals
+All Splunk dashboard panels and visualization images are stored in the **images** folder.
 
-![Dashboard Overview](./screenshots/dashboard_overview.png)
-![Top Event Types](./screenshots/dashboard_event_type_chart.png)
-![Denied Access Table](./screenshots/dashboard_denied_table.png)
+🖼️ [🔗 View Dashboard Images Folder](./images)
 
-📁 View all visuals in the [screenshots folder](./screenshots).
 
 ---
 
