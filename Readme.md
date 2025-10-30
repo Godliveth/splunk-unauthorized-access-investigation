@@ -37,10 +37,16 @@ The project combines **log analysis** and **dashboard creation** to detect suspi
 
 1. Installed **Splunk Enterprise** on Windows.  
 2. Added dataset via **Add Data → Upload**.
-3. 📥 [Download the Linux Unauthorized Auditd Log File](./Linux_UnAuthorized_Auditd_logs.json)
-4. Selected **_json** as the source type for automatic field extraction.  
-5. Indexed data into **linux_auth**.  
-6. Verified data with:
+3.Selected **_json** as the source type for automatic field extraction.
+4.Indexed data into **linux_auth**.
+
+# 📁Dataset
+
+ 📥 [Download the Linux Unauthorized Auditd Log File](./Linux_UnAuthorized_Auditd_logs.json)
+
+---
+
+## Verified data with:
    ```spl
    index=linux_auth | head 5
 ````
@@ -61,7 +67,7 @@ A total of **914 successful events** were recorded.
 **Interpretation:**
 These represent successful authentication or permitted actions within the audit logs, indicating normal system operations.
 
----
+````
 
 ### 🔹 Q2: Most Common Event Triggered
 
@@ -118,15 +124,15 @@ All findings were compiled into a Splunk dashboard for better visibility and qui
 | Panel                              | SPL Query                  | Visualization             | Description    |                                      |                                            |                                 |
 | ---------------------------------- | -------------------------- | ------------------------- | -------------- | ------------------------------------ | ------------------------------------------ | ------------------------------- |
 | **1. Success vs Failed Events**    | `index=linux_auth          | stats count by result`    | Pie Chart      | Displays event outcomes distribution |                                            |                                 |
-| **2. Top Users by Login Attempts**     | `index=linux_auth          | stats count by event_type | sort - count`  | Bar Chart                            | Highlights frequent security event types   |                                 |
-| **3. Suspicious Access Attempts   | `index=linux_auth uid=*    | stats count by path       | sort - count   | head 10`                             | Table                                      | Lists frequently accessed files |
+| **2. Top Users by Login Attempts**     | `index=linux_auth          | stats count by uid | sort - count`  | Bar Chart                            | Highlights potential brute-force patterns or frequent users    |                                 |
+| **3. Suspicious Access Attempts   | `index=linux_auth uid=*    | stats count by path       | sort - timestamp   |                              | Table                                      | Lists access attempts to restricted files  |
 
 ---
 
 #### 📊 Dashboard Visuals
 All Splunk dashboard panels and visualization images are stored in the **images** folder.
 
-🖼️ [🔗 View Dashboard Images Folder](./images)
+🖼️ [🔗 View Dashboard Images Folder](./image)
 
 
 ---
@@ -150,6 +156,7 @@ All Splunk dashboard panels and visualization images are stored in the **images*
 
 ---
 
+
 ## ✅ Conclusion
 
 This project shows how Splunk can transform Linux audit logs into **actionable insights** for detecting unauthorized access.
@@ -159,28 +166,18 @@ By combining SPL, dashboards, and visual analysis, a SOC analyst can quickly pin
 
 ---
 
-## 📂 Repository Structure
-
-```
-├── Linux_UnAuthorized_Auditd_logs.json
-├── screenshots/
-│   ├── Total_Success_Events.png
-│   ├── Most_Common_Triggered_Event.png
-│   ├── File_Path_Accessed_Twice_by_User.png
-│   ├── dashboard_overview.png
-│   ├── dashboard_event_type_chart.png
-│   └── dashboard_denied_table.png
-└── README.md
-```
 
 ---
 
-## 🏷️ Tags
 
-#Splunk #SIEM #SOCAnalyst #CyberSecurity #LogAnalysis #IncidentResponse #BlueTeam #LinuxSecurity #30DaysOfSOC #HandsOnLearning
 
-```
 
+
+
+
+
+Author: Godliveth Madu
+SOC Analyst Trainee 
 ---
 
 
