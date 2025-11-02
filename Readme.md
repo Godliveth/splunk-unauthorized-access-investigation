@@ -60,14 +60,14 @@ The project combines **log analysis** and **dashboard creation** to detect suspi
 ```spl
 index=linux_auth result=success | stats count as "Total Success Events"
 ```
-````
+
 **Result:**
 A total of **914 successful events** were recorded.
 
 **Interpretation:**
 These represent successful authentication or permitted actions within the audit logs, indicating normal system operations.
 
-````
+---
 
 ### 🔹 Q2: Most Common Event Triggered
 
@@ -107,6 +107,7 @@ index=linux_auth uid=1010 | stats count by path | where count=2
 **Interpretation:**
 User `uid=1010` attempted to access sensitive paths multiple times — including **/etc/shadow** and **/etc/sudoers** — which often indicate **privilege escalation or reconnaissance** attempts.
 
+--- 
 
 ### 🧩 Project Analysis Screenshots
 All query results and investigation evidence are stored in the **screenshots** folder.
@@ -118,6 +119,8 @@ All query results and investigation evidence are stored in the **screenshots** f
 ## 📊 Dashboard: Unauthorized Access Investigation
 
 All findings were compiled into a Splunk dashboard for better visibility and quick analysis.
+
+---
 
 ### 🧩 Dashboard Panels
 
@@ -176,8 +179,13 @@ By combining SPL, dashboards, and visual analysis, a SOC analyst can quickly pin
 
 
 
-Author: Godliveth Madu
+Author: 
+
+Godliveth Madu     
+
 SOC Analyst Trainee 
+
+
 ---
 
 
